@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   type GestureStateChangeEvent,
   type GestureUpdateEvent,
@@ -22,9 +23,9 @@ export const useGestureHandler: GestureHandlersHookType = (
   onEnd: GestureEventHandlerCallbackType,
   onFinalize: GestureEventHandlerCallbackType
 ) => {
-  const handleOnStart = useWorkletCallback(
+  const handleOnStart = useCallback(
     (event: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
-        'worklet';
+      'worklet';
       state.value = State.BEGAN;
       gestureSource.value = source;
 
@@ -34,13 +35,13 @@ export const useGestureHandler: GestureHandlersHookType = (
     [state, gestureSource, source, onStart]
   );
 
-  const handleOnChange = useWorkletCallback(
+  const handleOnChange = useCallback(
     (
       event: GestureUpdateEvent<
         PanGestureHandlerEventPayload & PanGestureChangeEventPayload
       >
     ) => {
-        'worklet';
+      'worklet';
       if (gestureSource.value !== source) {
         return;
       }
@@ -51,9 +52,9 @@ export const useGestureHandler: GestureHandlersHookType = (
     [state, gestureSource, source, onChange]
   );
 
-  const handleOnEnd = useWorkletCallback(
+  const handleOnEnd = useCallback(
     (event: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
-        'worklet';
+      'worklet';
       if (gestureSource.value !== source) {
         return;
       }
@@ -66,9 +67,9 @@ export const useGestureHandler: GestureHandlersHookType = (
     [state, gestureSource, source, onEnd]
   );
 
-  const handleOnFinalize = useWorkletCallback(
+  const handleOnFinalize = useCallback(
     (event: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
-        'worklet';
+      'worklet';
       if (gestureSource.value !== source) {
         return;
       }
