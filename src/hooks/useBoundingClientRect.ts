@@ -56,7 +56,7 @@ export function useBoundingClientRect(
     }
 
     // @ts-ignore 👉 https://github.com/facebook/react/commit/53b1f69ba
-    if (ref.current.unstable_getBoundingClientRect !== null) {
+    if (ref.current.unstable_getBoundingClientRect !== null && typeof ref.current.unstable_getBoundingClientRect !== 'function') {
       // @ts-ignore https://github.com/facebook/react/commit/53b1f69ba
       const layout = ref.current.unstable_getBoundingClientRect();
       handler(layout);
