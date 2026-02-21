@@ -10,6 +10,7 @@ import {
 } from '../../hooks';
 import { print } from '../../utilities';
 import { DEFAULT_ENABLE_HANDLE_PANNING_GESTURE } from '../bottomSheet/constants';
+import BottomSheetHandle from './BottomSheetHandle';
 import type { BottomSheetHandleContainerProps } from './types';
 
 function BottomSheetHandleContainerComponent({
@@ -17,7 +18,8 @@ function BottomSheetHandleContainerComponent({
   animatedPosition,
   simultaneousHandlers: _internalSimultaneousHandlers,
   enableHandlePanningGesture = DEFAULT_ENABLE_HANDLE_PANNING_GESTURE,
-  handleComponent: HandleComponent,
+  handleHeight,
+  handleComponent,
   handleStyle: _providedHandleStyle,
   handleIndicatorStyle: _providedIndicatorStyle,
 }: BottomSheetHandleContainerProps) {
@@ -27,7 +29,6 @@ function BottomSheetHandleContainerComponent({
 
   //#region hooks
   const {
-    animatedLayoutState,
     activeOffsetX,
     activeOffsetY,
     failOffsetX,
@@ -115,15 +116,11 @@ function BottomSheetHandleContainerComponent({
         layout: { height },
       },
     }: LayoutChangeEvent) {
-      animatedLayoutState.modify(state => {
-        'worklet';
-        state.handleHeight = height;
-        return state;
-      });
+      handleHeight.value = height;
 
       if (__DEV__) {
         print({
-          component: 'BottomSheetHandleContainer',
+          component: BottomSheetHandleContainer.displayName,
           method: 'handleContainerLayout',
           category: 'layout',
           params: {
@@ -132,19 +129,14 @@ function BottomSheetHandleContainerComponent({
         });
       }
     },
-    [animatedLayoutState]
+    [handleHeight]
   );
   const handleBoundingClientRect = useCallback(
     ({ height }: BoundingClientRect) => {
-      animatedLayoutState.modify(state => {
-        'worklet';
-        state.handleHeight = height;
-        return state;
-      });
-
+      handleHeight.value = height;
       if (__DEV__) {
         print({
-          component: 'BottomSheetHandleContainer',
+          component: BottomSheetHandleContainer.displayName,
           method: 'handleBoundingClientRect',
           category: 'layout',
           params: {
@@ -153,7 +145,7 @@ function BottomSheetHandleContainerComponent({
         });
       }
     },
-    [animatedLayoutState]
+    [handleHeight]
   );
   //#endregion
 
@@ -162,6 +154,7 @@ function BottomSheetHandleContainerComponent({
   //#endregion
 
   //#region renders
+  const HandleComponent = handleComponent ?? BottomSheetHandle;
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View

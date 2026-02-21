@@ -45,10 +45,6 @@ const BottomSheetFlashListComponent = forwardRef<
     if (!FlashList) {
       throw 'You need to install FlashList first, `yarn install @shopify/flash-list`';
     }
-
-    console.warn(
-      'BottomSheetFlashList is deprecated, please use useBottomSheetScrollableCreator instead.'
-    );
   }, []);
 
   //#region render

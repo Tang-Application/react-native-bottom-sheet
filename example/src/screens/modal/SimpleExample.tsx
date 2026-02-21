@@ -23,10 +23,7 @@ export const SimpleExample = () => {
 
   //#region callbacks
   const handleChange = useCallback((index: number) => {
-    console.log('handleChange', index);
-  }, []);
-  const handleAnimate = useCallback((fromIndex: number, toIndex: number) => {
-    console.log('handleAnimate', fromIndex, '>', toIndex);
+    console.log('index', index);
   }, []);
   const handleDismiss = useCallback(() => {
     console.log('on dismiss');
@@ -88,10 +85,9 @@ export const SimpleExample = () => {
         enableDynamicSizing={false}
         onDismiss={handleDismiss}
         onChange={handleChange}
-        onAnimate={handleAnimate}
         handleComponent={renderHeaderHandle}
       >
-        <ContactList count={5} type="ScrollView" />
+        <ContactList count={4} type="View" />
       </BottomSheetModal>
     </View>
   );

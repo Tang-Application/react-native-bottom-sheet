@@ -36,11 +36,13 @@ export interface BottomSheetDefaultHandleProps
 export type BottomSheetHandleContainerProps = Pick<
   PanGestureHandlerProperties,
   'simultaneousHandlers'
-> & {
-  handleComponent: React.FC<BottomSheetDefaultHandleProps>;
-} & Pick<
+> &
+  Pick<
     BottomSheetProps,
-    'enableHandlePanningGesture' | 'handleIndicatorStyle' | 'handleStyle'
+    | 'enableHandlePanningGesture'
+    | 'handleIndicatorStyle'
+    | 'handleStyle'
+    | 'handleComponent'
   > &
   Pick<
     useInteractivePanGestureHandlerConfigs,
@@ -49,4 +51,6 @@ export type BottomSheetHandleContainerProps = Pick<
     | 'overDragResistanceFactor'
     | 'keyboardBehavior'
   > &
-  BottomSheetHandleProps;
+  BottomSheetHandleProps & {
+    handleHeight: SharedValue<number>;
+  };

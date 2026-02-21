@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { KEYBOARD_STATUS } from '../../constants';
+import { KEYBOARD_STATE } from '../../constants';
 import {
   type BoundingClientRect,
   useBottomSheetInternal,
@@ -22,7 +22,7 @@ function BottomSheetFooterComponent({
   //#endregion
 
   //#region hooks
-  const { animatedLayoutState, animatedKeyboardState } =
+  const { animatedFooterHeight, animatedKeyboardState } =
     useBottomSheetInternal();
   //#endregion
 
@@ -33,7 +33,7 @@ function BottomSheetFooterComponent({
     /**
      * Offset the bottom inset only when keyboard is not shown
      */
-    if (animatedKeyboardState.get().status !== KEYBOARD_STATUS.SHOWN) {
+    if (animatedKeyboardState.get() !== KEYBOARD_STATE.SHOWN) {
       footerTranslateY = footerTranslateY - bottomInset;
     }
 
@@ -58,11 +58,7 @@ function BottomSheetFooterComponent({
         layout: { height },
       },
     }: LayoutChangeEvent) => {
-      animatedLayoutState.modify(state => {
-        'worklet';
-        state.footerHeight = height;
-        return state;
-      });
+      animatedFooterHeight.set(height);
 
       if (__DEV__) {
         print({
@@ -75,15 +71,11 @@ function BottomSheetFooterComponent({
         });
       }
     },
-    [animatedLayoutState]
+    [animatedFooterHeight]
   );
   const handleBoundingClientRect = useCallback(
     ({ height }: BoundingClientRect) => {
-      animatedLayoutState.modify(state => {
-        'worklet';
-        state.footerHeight = height;
-        return state;
-      });
+      animatedFooterHeight.set(height);
 
       if (__DEV__) {
         print({
@@ -96,7 +88,7 @@ function BottomSheetFooterComponent({
         });
       }
     },
-    [animatedLayoutState]
+    [animatedFooterHeight]
   );
   //#endregion
 

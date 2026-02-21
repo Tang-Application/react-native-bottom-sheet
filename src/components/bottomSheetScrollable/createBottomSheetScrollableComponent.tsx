@@ -8,7 +8,7 @@ import { Gesture } from 'react-native-gesture-handler';
 import { useAnimatedProps } from 'react-native-reanimated';
 import {
   SCROLLABLE_DECELERATION_RATE_MAPPER,
-  SCROLLABLE_STATUS,
+  SCROLLABLE_STATE,
   type SCROLLABLE_TYPE,
 } from '../../constants';
 import { BottomSheetDraggableContext } from '../../contexts/gesture';
@@ -62,10 +62,8 @@ export function createBottomSheetScrollableComponent<T, P>(
         onScrollBeginDrag,
         onScrollEndDrag
       );
-    const {
-      animatedScrollableStatus: animatedScrollableState,
-      enableContentPanningGesture,
-    } = useBottomSheetInternal();
+    const { animatedScrollableState, enableContentPanningGesture } =
+      useBottomSheetInternal();
     const { setContentSize } = useBottomSheetContentSizeSetter();
     //#endregion
 
@@ -79,7 +77,7 @@ export function createBottomSheetScrollableComponent<T, P>(
         decelerationRate:
           SCROLLABLE_DECELERATION_RATE_MAPPER[animatedScrollableState.value],
         showsVerticalScrollIndicator: showsVerticalScrollIndicator
-          ? animatedScrollableState.value === SCROLLABLE_STATUS.UNLOCKED
+          ? animatedScrollableState.value === SCROLLABLE_STATE.UNLOCKED
           : showsVerticalScrollIndicator,
       }),
       [animatedScrollableState, showsVerticalScrollIndicator]

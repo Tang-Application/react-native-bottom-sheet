@@ -1,4 +1,4 @@
-import { createContext, type RefObject } from 'react';
+import { type RefObject, createContext } from 'react';
 import type { State } from 'react-native-gesture-handler';
 import type { SharedValue } from 'react-native-reanimated';
 import type {
@@ -6,16 +6,14 @@ import type {
   BottomSheetGestureProps,
   BottomSheetProps,
 } from '../components/bottomSheet/types';
-import type { SCROLLABLE_STATUS, SHEET_STATE } from '../constants';
 import type {
-  AnimationState,
-  DetentsState,
-  KeyboardState,
-  LayoutState,
-  Scrollable,
-  ScrollableRef,
-  ScrollableState,
-} from '../types';
+  ANIMATION_STATE,
+  KEYBOARD_STATE,
+  SCROLLABLE_STATE,
+  SCROLLABLE_TYPE,
+  SHEET_STATE,
+} from '../constants';
+import type { Scrollable, ScrollableRef } from '../types';
 
 export interface BottomSheetInternalContextType
   extends Partial<BottomSheetGestureProps>,
@@ -31,32 +29,39 @@ export interface BottomSheetInternalContextType
       >
     > {
   // animated states
-  animatedDetentsState: SharedValue<DetentsState>;
-  animatedAnimationState: SharedValue<AnimationState>;
+  animatedAnimationState: SharedValue<ANIMATION_STATE>;
   animatedSheetState: SharedValue<SHEET_STATE>;
-  animatedKeyboardState: SharedValue<KeyboardState>;
+  animatedScrollableState: SharedValue<SCROLLABLE_STATE>;
+  animatedKeyboardState: SharedValue<KEYBOARD_STATE>;
   animatedContentGestureState: SharedValue<State>;
   animatedHandleGestureState: SharedValue<State>;
-  animatedLayoutState: SharedValue<LayoutState>;
-
-  // scrollable
-  animatedScrollableState: SharedValue<ScrollableState>;
-  animatedScrollableStatus: SharedValue<SCROLLABLE_STATUS>;
 
   // animated values
+  animatedSnapPoints: SharedValue<number[]>;
   animatedPosition: SharedValue<number>;
   animatedIndex: SharedValue<number>;
+  animatedContainerHeight: SharedValue<number>;
+  animatedContentHeight: SharedValue<number>;
   animatedSheetHeight: SharedValue<number>;
+  animatedHighestSnapPoint: SharedValue<number>;
+  animatedClosedPosition: SharedValue<number>;
+  animatedFooterHeight: SharedValue<number>;
+  animatedHandleHeight: SharedValue<number>;
+  animatedKeyboardHeight: SharedValue<number>;
+  animatedKeyboardHeightInContainer: SharedValue<number>;
+  animatedScrollableType: SharedValue<SCROLLABLE_TYPE>;
+  animatedScrollableContentOffsetY: SharedValue<number>;
+  animatedScrollableOverrideState: SharedValue<SCROLLABLE_STATE>;
+  isScrollableRefreshable: SharedValue<boolean>;
+  isContentHeightFixed: SharedValue<boolean>;
   isInTemporaryPosition: SharedValue<boolean>;
+  shouldHandleKeyboardEvents: SharedValue<boolean>;
 
   // methods
   stopAnimation: () => void;
   animateToPosition: AnimateToPositionType;
   setScrollableRef: (ref: ScrollableRef) => void;
   removeScrollableRef: (ref: RefObject<Scrollable>) => void;
-
-  // refs
-  textInputNodesRef: React.MutableRefObject<Set<number>>;
 }
 
 export const BottomSheetInternalContext =

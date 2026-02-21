@@ -1,16 +1,11 @@
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { WINDOW_WIDTH } from '../../constants';
-
 
 export const styles = StyleSheet.create({
   container: {
     padding: 10,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer' as const
-      },
-      default: {}
-    }),
+    // @ts-ignore supported on web
+    cursor: 'grab',
   },
 
   indicator: {

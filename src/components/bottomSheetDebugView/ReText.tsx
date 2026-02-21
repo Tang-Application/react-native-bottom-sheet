@@ -9,7 +9,7 @@ import Animated, {
 
 interface TextProps {
   text: string;
-  value: SharedValue<number | boolean | object> | number;
+  value: SharedValue<number | boolean> | number;
   style?: AnimatedProps<RNTextProps>['style'];
 }
 
@@ -19,54 +19,30 @@ if (typeof Animated?.addWhitelistedNativeProps === 'function') {
   Animated.addWhitelistedNativeProps({ text: true });
 }
 
-const ReText = ({ text, value: _providedValue, style }: TextProps) => {
-  const providedValue = useDerivedValue(() => {
-    if (!_providedValue) {
-      return '';
-    }
-
-    let rawValue: number | string | object | boolean = '';
-    if (typeof _providedValue === 'number') {
-      rawValue = _providedValue as number;
-    } else if (typeof _providedValue.get === 'function') {
-      rawValue = _providedValue.get();
-    }
-
-    if (typeof rawValue === 'object') {
-      const rawValueObject = Object.entries(rawValue)
-        .map(item => `${item[0]}: ${item[1]}`)
-        .reduce((result, current, index) => {
-          if (index !== 0) {
-            result = `${result} \n`;
-          }
-
-          result = `${result}- ${current}`;
-          return result;
-        }, '');
-
-      return `${text}\n${rawValueObject}`;
-    }
-
-    if (typeof rawValue === 'number') {
-      rawValue = rawValue.toFixed(2);
-    }
-
-    return `${text}: ${rawValue}`;
-  }, [text, _providedValue]);
+const ReText = (props: TextProps) => {
+  const { text, value: _providedValue, style } = { style: {}, ...props };
+  const providedValue = useDerivedValue(
+    () =>
+      typeof _providedValue === 'number'
+        ? _providedValue
+        : typeof _providedValue.value === 'number'
+          ? _providedValue.value.toFixed(2)
+          : _providedValue.value,
+    [_providedValue]
+  );
   const animatedProps = useAnimatedProps(() => {
     return {
-      text: providedValue.get(),
+      text: `${text}: ${providedValue.value}`,
     };
-  }, [providedValue]);
+  }, [text, providedValue]);
   return (
     <AnimatedTextInput
       underlineColorAndroid="transparent"
       editable={false}
-      value={providedValue?.get() ?? ''}
+      value={`${text}: ${providedValue.value}`}
       style={style}
       // @ts-ignore
       animatedProps={animatedProps}
-      multiline={true}
     />
   );
 };

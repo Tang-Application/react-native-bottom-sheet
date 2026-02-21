@@ -16,11 +16,10 @@ export { useGestureEventsHandlersDefault } from './useGestureEventsHandlersDefau
 export { useBottomSheetGestureHandlers } from './useBottomSheetGestureHandlers';
 
 // utilities
-export { useAnimatedLayout } from './useAnimatedLayout';
-export { useAnimatedKeyboard } from './useAnimatedKeyboard';
+export { useKeyboard } from './useKeyboard';
 export { useStableCallback } from './useStableCallback';
 export { usePropsValidator } from './usePropsValidator';
-export { useAnimatedDetents } from './useAnimatedDetents';
+export { useAnimatedSnapPoints } from './useAnimatedSnapPoints';
 export { useReactiveSharedValue } from './useReactiveSharedValue';
 export {
   useBoundingClientRect,

@@ -1,16 +1,16 @@
 import { PortalProvider } from '@gorhom/portal';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useSharedValue } from 'react-native-reanimated';
-import {
-  INITIAL_CONTAINER_LAYOUT,
-  MODAL_STACK_BEHAVIOR,
-} from '../../constants';
+import { MODAL_STACK_BEHAVIOR } from '../../constants';
 import {
   BottomSheetModalInternalProvider,
   BottomSheetModalProvider,
 } from '../../contexts';
-import type { ContainerLayoutState } from '../../types';
 import { id } from '../../utilities/id';
+import {
+  INITIAL_CONTAINER_HEIGHT,
+  INITIAL_CONTAINER_OFFSET,
+} from '../bottomSheet/constants';
 import { BottomSheetHostingContainer } from '../bottomSheetHostingContainer';
 import type {
   BottomSheetModalPrivateMethods,
@@ -25,9 +25,8 @@ const BottomSheetModalProviderWrapper = ({
   children,
 }: BottomSheetModalProviderProps) => {
   //#region layout variables
-  const animatedContainerLayoutState = useSharedValue<ContainerLayoutState>(
-    INITIAL_CONTAINER_LAYOUT
-  );
+  const animatedContainerHeight = useSharedValue(INITIAL_CONTAINER_HEIGHT);
+  const animatedContainerOffset = useSharedValue(INITIAL_CONTAINER_OFFSET);
   //#endregion
 
   //#region variables
@@ -179,14 +178,16 @@ const BottomSheetModalProviderWrapper = ({
   const internalContextVariables = useMemo(
     () => ({
       hostName,
-      containerLayoutState: animatedContainerLayoutState,
+      containerHeight: animatedContainerHeight,
+      containerOffset: animatedContainerOffset,
       mountSheet: handleMountSheet,
       unmountSheet: handleUnmountSheet,
       willUnmountSheet: handleWillUnmountSheet,
     }),
     [
       hostName,
-      animatedContainerLayoutState,
+      animatedContainerHeight,
+      animatedContainerOffset,
       handleMountSheet,
       handleUnmountSheet,
       handleWillUnmountSheet,
@@ -199,7 +200,8 @@ const BottomSheetModalProviderWrapper = ({
     <BottomSheetModalProvider value={externalContextVariables}>
       <BottomSheetModalInternalProvider value={internalContextVariables}>
         <BottomSheetHostingContainer
-          containerLayoutState={animatedContainerLayoutState}
+          containerOffset={animatedContainerOffset}
+          containerHeight={animatedContainerHeight}
         />
         <PortalProvider rootHostName={hostName}>{children}</PortalProvider>
       </BottomSheetModalInternalProvider>
