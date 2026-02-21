@@ -48,7 +48,7 @@ function BottomSheetModalComponent<T = any>(
     onAnimate: _providedOnAnimate,
 
     // bottom sheet props
-    index = 0,
+    index = IS_REANIMATED_V4 ? 1 : 0,
     snapPoints,
     enablePanDownToClose = true,
     animateOnMount = true,
